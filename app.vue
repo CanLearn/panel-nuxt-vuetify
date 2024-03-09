@@ -1,10 +1,10 @@
 <template>
-  <NuxtLoadingIndicator color="#ffbe33" />
-  <NuxtPage />
+  <div>
+    <NuxtLoadingIndicator color="#ffbe33" />
+    <NuxtPage />
+  </div>
 </template>
 <style>
-
-
 a,
 .a,
 #a {

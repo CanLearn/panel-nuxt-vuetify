@@ -4,6 +4,11 @@ export default defineNuxtConfig({
   pages: true,
   css: ['vuetify/lib/styles/main.css'],
   build: {
-    transpile: ['vuetify', "vue-toastification"],
-  },
+    transpile: ['vuetify', 'vue-toastification'],
+  }, 
+  runtimeConfig : {
+    public : {
+      apiBase : 'http://127.0.0.1:8000'
+    }
+  }
 })

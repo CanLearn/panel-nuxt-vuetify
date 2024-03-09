@@ -23,7 +23,7 @@
 
 
 
-                    <NuxtLink to="/panel/profile/">
+                    <NuxtLink to="/panel/chart/">
                         <v-list-item prepend-icon="mdi-chart-areaspline" link title="چارت"></v-list-item>
                     </NuxtLink>
                     <NuxtLink to="/panel/profile/">
@@ -32,9 +32,14 @@
                     <NuxtLink to="/panel/profile/">
                         <v-list-item prepend-icon="mdi-contacts" link title="پرداخت "></v-list-item>
                     </NuxtLink>
+                    <NuxtLink to="/panel/notification/">
+                        <v-list-item prepend-icon="mdi-contacts" link title="نوتیفیکشن"></v-list-item>
+                    </NuxtLink>
                     <NuxtLink to="/panel/profile/">
                         <v-list-item prepend-icon="mdi-contacts" link title="پروفایل"></v-list-item>
                     </NuxtLink>
+                    <v-list-item prepend-icon="mdi-logout" @click="logout" link title="حروج"></v-list-item>
+
                 </v-list>
             </v-card>
         </v-container>
@@ -52,17 +57,20 @@
 </template>
 
 <script setup>
+const { authUser } = useAuth() 
+
 import { ref } from 'vue'
 const drawer = ref(null)
+async  function logout () {
+    const { data , error }  = await useFetch('/api/auth/logout' , {
+        method : "POST"
+    });
+
+    authUser.value = null ; 
+    return navigateTo('/')
+}
 
 
-const cards = ['Today', 'Yesterday']
-const links = [
-    ['mdi-inbox-arrow-down', 'Inbox'],
-    ['mdi-send', 'Send'],
-    ['mdi-delete', 'Trash'],
-    ['mdi-alert-octagon', 'Spam'],
-];
 
 </script>
 
