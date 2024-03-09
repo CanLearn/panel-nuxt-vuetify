@@ -9,7 +9,6 @@ export default defineEventHandler(async (event) => {
                 'Accept': 'application/json',
             }
         });
-
         setCookie(event , 'token' , data.token , {
             httpOnly : true , 
             secure : true , 
