@@ -38,6 +38,9 @@
 
 <script setup>
 const { authUser } = useAuth() 
+definePageMeta({
+    middleware : 'guest'
+})
 const errors = ref([]);
 const formData = reactive({
     email: "",

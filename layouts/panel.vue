@@ -11,6 +11,9 @@
   </template>
 
 <script setup>
+definePageMeta({
+    middleware : 'auth'
+ })
 import PanelSideBar from '../components/Panel/sideBar.vue';
 import { ref } from 'vue'
 

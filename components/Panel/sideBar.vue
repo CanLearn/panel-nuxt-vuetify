@@ -4,7 +4,7 @@
             <v-card color="#171821" class="mx-auto pa-2 " max-width="800" style="height: 100%;" width="700">
                 <v-sheet color="#171821" class="pa-4">
                     <v-avatar class="mb-4 mx-10" color="grey-darken-1" size="120"></v-avatar>
-                    <div class="mx-4">john@google.com</div>
+                    <div class="">{{ authUser?.email }}</div>
                 </v-sheet>
                 <v-divider></v-divider>
                 <v-list class="mx-7">
@@ -30,10 +30,10 @@
                         <v-list-item prepend-icon="mdi-transcribe-close" link title="تراکنش"></v-list-item>
                     </NuxtLink>
                     <NuxtLink to="/panel/profile/">
-                        <v-list-item prepend-icon="mdi-contacts" link title="پرداخت "></v-list-item>
+                        <v-list-item prepend-icon="mdi-treasure-chest" link title="پرداخت "></v-list-item>
                     </NuxtLink>
                     <NuxtLink to="/panel/notification/">
-                        <v-list-item prepend-icon="mdi-contacts" link title="نوتیفیکشن"></v-list-item>
+                        <v-list-item prepend-icon="mdi-bell" link title="نوتیفیکشن"></v-list-item>
                     </NuxtLink>
                     <NuxtLink to="/panel/profile/">
                         <v-list-item prepend-icon="mdi-contacts" link title="پروفایل"></v-list-item>
@@ -57,6 +57,9 @@
 </template>
 
 <script setup>
+ definePageMeta({
+    middleware : 'auth'
+ })
 const { authUser } = useAuth() 
 
 import { ref } from 'vue'

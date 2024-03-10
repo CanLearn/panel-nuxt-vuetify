@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
             httpOnly : true , 
             secure : true , 
             maxAge : 60 * 60 * 24 * 7 , 
-            path : '/'
+            path : '/panel'
         });
         return data.user ;
     } catch (error) {
