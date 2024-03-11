@@ -2,12 +2,13 @@ export default defineEventHandler(async (event) => {
     const { public: { apiBase } } = useRuntimeConfig()
     const token = getCookie(event, 'token');
     try {
-        const data = await $fetch(`${apiBase}/api/me`, {
+        const data = await $fetch(`${apiBase}/api/auth/me`, {
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
         });
+        console.log(data.user);
         return data.user;
     } catch (error) {
        if( error.statusCode == 401 ){

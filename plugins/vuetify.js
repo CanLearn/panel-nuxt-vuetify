@@ -9,10 +9,10 @@ export default defineNuxtPlugin(nuxtApp => {
     ssr: true,
     components,
     directives,
-    locale: {
-        locale: 'fa',
-        messages: { fa  },
-      },
+    // locale: {
+    //     locale: 'fa',
+    //     messages: { fa  },
+    //   },
     //   theme: {
     //     defaultTheme: 'light  '
     // },

@@ -1,3 +1,5 @@
+import { da } from "vuetify/locale";
+
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const { public: { apiBase  } } = useRuntimeConfig()
@@ -13,7 +15,7 @@ export default defineEventHandler(async (event) => {
             httpOnly : true , 
             secure : true , 
             maxAge : 60 * 60 * 24 * 7 , 
-            path : '/panel'
+            path : '/'
         });
         return data.user ;
     } catch (error) {
