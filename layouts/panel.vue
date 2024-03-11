@@ -9,7 +9,6 @@
       </v-main>
     </v-app>
   </template>
-
 <script setup>
 definePageMeta({
     middleware : 'auth'
