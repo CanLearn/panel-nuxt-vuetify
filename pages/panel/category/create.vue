@@ -18,49 +18,33 @@
           style="background-color: #171821"
         >
           <v-btn class="p-auth mx-10">
-            <h5>Create article</h5>
+            <h5>Landing article</h5>
           </v-btn>
         </NuxtLink>
       </v-toolbar>
-      <div class="mt-10 w-100 pa-4 " rounded>
-        <v-card class="mx-auto px-6 py-8 w-100" >
-          <v-form v-model="form" @submit.prevent="onSubmit">
+      <div class="mt-10 w-100 pa-4" rounded>
+        <v-card class="mx-auto px-6 py-8 w-100">
+          <v-form @submit.prevent="create">
             <v-text-field
-              v-model="title"
-              :readonly="loading"
-              :rules="[required]"
+              v-model="formData.title"
               class="mb-2"
               label="title"
               clearable
             ></v-text-field>
-
+          
             <v-select
-              clearable
-              label="parent"
-              :items="[
-                'California',
-                'Colorado',
-                'Florida',
-                'Georgia',
-                'Texas',
-                'Wyoming',
-              ]"
-              variant="solo-filled"
-            ></v-select>
+              v-model="formData.parent_id"
 
+              :items="parents"
+              item-title="title"
+              item-value="id"
+              label="Select"
+        
+              single-line
+            ></v-select>
             <br />
 
-            <v-btn
-              :disabled="!form"
-              :loading="loading"
-              color="grey-darken-1"
-            
-              type="submit"
-              variant="elevated"
-              block
-            >
-             send
-            </v-btn>
+            <button class="btn btn-success">asdas</button>
           </v-form>
         </v-card>
       </div>
@@ -68,28 +52,52 @@
   </div>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    form: false,
-    email: null,
-    password: null,
-    loading: false,
-  }),
+<script setup>
+const { data: parents } = await useFetch("/api/panel/category/parent", {
+  query: { url: "/api/panel/category-parent" },
+  headers: useRequestHeaders(["cookie"]),
+});
+const formData = reactive({
+  title: "",
+  parent_id: null,
+});
 
-  methods: {
-    onSubmit() {
-      if (!this.form) return;
+async function create() {
+  try {
+    const category = await $fetch("/api/panel/category/create", {
+      method: "POST",
+      body: formData,
+    });
+    toast.success("You are registered!");
+    return navigateTo("/");
+  } catch (error) {
+    errors.value = Object.values(error.data.data).flat();
+  } finally {
+    loading.value = false;
+  }
+}
 
-      this.loading = true;
+// export default {
+//   data: () => ({
+//     form: false,
+//     email: null,
+//     password: null,
+//     loading: false,
+//   }),
 
-      setTimeout(() => (this.loading = false), 2000);
-    },
-    required(v) {
-      return !!v || "Field is required";
-    },
-  },
-};
+//   methods: {
+//     onSubmit() {
+//       if (!this.form) return;
+
+//       this.loading = true;
+
+//       setTimeout(() => (this.loading = false), 2000);
+//     },
+//     required(v) {
+//       return !!v || "Field is required";
+//     },
+//   },
+// };
 </script>
 
 <style>

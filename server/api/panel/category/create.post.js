@@ -1,21 +1,18 @@
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const { public: { apiBase  } } = useRuntimeConfig()
+    const token = getCookie(event, 'token');
     try {
-        const data = await $fetch(`${apiBase}/api/auth/register`, {
+        const data = await $fetch(`${apiBase}/api/panel/categories/`, {
             method: "POST",
             body: body,
             headers: {
                 'Accept': 'application/json',
+                'Authorization': `Bearer `+ token
             }
         });
-        setCookie(event , 'token' , data.token , {
-            httpOnly : true , 
-            secure : true , 
-            maxAge : 60 * 60 * 24 * 7 , 
-            path : '/'
-        });
-        return data.user ;
+        console.log(data);
+        return data ;
     } catch (error) {
     }
 })

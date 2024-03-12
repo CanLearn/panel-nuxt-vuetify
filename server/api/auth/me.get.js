@@ -8,7 +8,6 @@ export default defineEventHandler(async (event) => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        console.log(data.user);
         return data.user;
     } catch (error) {
        if( error.statusCode == 401 ){
