@@ -125,6 +125,7 @@ const data = reactive({
   image: null,
 });
 
+
 function imagesFile(event) {
   console.log(event.target.files[0]  , 'event');
   data.image.value = event.target.files[0];
