@@ -38,11 +38,9 @@
             <td>{{ category.title }}</td>
 
             <td class="d-flex mx-10 justify-justify-space-between">
-              <NuxtLink :to="`/category/edit/${category.id}`">
-                <v-icon class="mx-2" color="black "
-                  >mdi-pencil-box</v-icon
-                ></NuxtLink
-              >
+              <NuxtLink :to="`category/edit/${category.id}`">
+                <v-icon class="mx-2" color="black ">mdi-pencil-box</v-icon>
+              </NuxtLink>
               <v-icon
                 class="mx-2"
                 color="red "
@@ -59,26 +57,30 @@
 
 
 <script setup >
-const { data: categories } = await useFetch("/api/global", {
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+
+const { data: categories , refresh } = await useFetch("/api/global", {
   query: { url: "/api/panel/categories/" },
   headers: useRequestHeaders(["cookie"]),
 });
 
-  async function deleteCategory(categoryId) {
-    try {
-      await $fetch("/api/panel/category/delete", {
-        method: "DELETE",
-        query: { url: `/api/panel/categories/${categoryId}` },
-      });
+async function deleteCategory(categoryId) {
+  try {
+    await $fetch("/api/panel/category/delete", {
+      method: "DELETE",
+      query: { url: `/api/panel/categories/${categoryId}` },
+    });
 
-      toast.warning("حذف دسته بندی باموفقیت انجام شد");
-      return navigateTo("/");
-    } catch (error) {
-      console.log(error.data , 'sdasd');
-    } finally {
-      loading.value = false;
-    }
+    toast.success("The article was delete correctly ");
+    return navigateTo("/panel/category");
+  } catch (error) {
+    console.log(error.data, "sdasd");
+  } finally {
+    loading.value = false;
   }
+}
 </script>
 
 <style  scoped>

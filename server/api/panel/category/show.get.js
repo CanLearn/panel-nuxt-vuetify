@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
         Accept: "application/json",
         Authorization: `Bearer ` + token,
       },
-      method:"delete"
     });
     return data;
   } catch (error) {

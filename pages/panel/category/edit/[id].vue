@@ -9,7 +9,9 @@
           border-radius: 15px;
         "
       >
-        <v-toolbar-title class="text-white mr-9">Category</v-toolbar-title>
+        <v-toolbar-title class="text-white mr-9">
+          title category : {{ category.title }}</v-toolbar-title
+        >
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <NuxtLink
@@ -24,27 +26,27 @@
       </v-toolbar>
       <div class="mt-10 w-100 pa-4" rounded>
         <v-card class="mx-auto px-6 py-8 w-100">
-          <v-form @submit.prevent="create">
+          <v-form @submit.prevent="update">
             <v-text-field
               v-model="formData.title"
+              :placeholder="category.title"
               class="mb-2"
               label="title"
               clearable
             ></v-text-field>
-          
+
             <v-select
               v-model="formData.parent_id"
-
               :items="parents"
+              :placeholder="category.parent_id"
               item-title="title"
               item-value="id"
               label="Select"
-        
               single-line
             ></v-select>
             <br />
 
-            <button class="btn btn-success">send </button>
+            <button class="btn btn-success">send</button>
           </v-form>
         </v-card>
       </div>
@@ -52,56 +54,46 @@
   </div>
 </template>
 
+
 <script setup>
 import { useToast } from "vue-toastification";
-
+const loading = ref(false);
+const errors = ref([]);
 const toast = useToast();
+const route = useRoute();
+definePageMeta({
+  middleware: "auth",
+});
+const { data: category } = await useFetch("/api/panel/category/show", {
+  query: { url: `/api/panel/categories/${route.params.id}` },
+  headers: useRequestHeaders(["cookie"]),
+});
 const { data: parents } = await useFetch("/api/panel/category/parent", {
   query: { url: "/api/panel/category-parent" },
   headers: useRequestHeaders(["cookie"]),
 });
+
 const formData = reactive({
   title: "",
   parent_id: null,
 });
-
-async function create() {
+async function update() {
   try {
-    const category = await $fetch("/api/panel/category/create", {
-      method: "POST",
+    loading.value = true;
+    errors.value = [];
+
+    await $fetch("/api/panel/category/update/", {
+      method: "PUT",
       body: formData,
+      query: { url: `/api/panel/categories/${category.value.id}` },
     });
-    toast.success("The article was delete correctly ");
+
+    toast.success("The article was edited correctly ");
     return navigateTo("/panel/category");
   } catch (error) {
-    errors.value = Object.values(error.data.data).flat();
+    errors.value = Object.values(error.data.data.message).flat();
   } finally {
     loading.value = false;
   }
 }
-
-// export default {
-//   data: () => ({
-//     form: false,
-//     email: null,
-//     password: null,
-//     loading: false,
-//   }),
-
-//   methods: {
-//     onSubmit() {
-//       if (!this.form) return;
-
-//       this.loading = true;
-
-//       setTimeout(() => (this.loading = false), 2000);
-//     },
-//     required(v) {
-//       return !!v || "Field is required";
-//     },
-//   },
-// };
 </script>
-
-<style>
-</style>

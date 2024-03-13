@@ -6,6 +6,13 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify', 'vue-toastification'],
   }, 
+  modules: ["nuxt-tiptap-editor"],
+  tiptap: {
+    prefix: "Tiptap", 
+    lowlight: {
+      theme: "github-dark",
+    },
+  },
   runtimeConfig : {
     public : {
       apiBase : 'http://127.0.0.1:8000'
