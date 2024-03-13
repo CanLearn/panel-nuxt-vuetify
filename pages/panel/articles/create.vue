@@ -24,76 +24,69 @@
       </v-toolbar>
       <div class="mt-10 w-100" rounded>
         <v-card class="mx-auto px-6 py-8 w-100">
-          <v-form v-model="form" @submit.prevent="onSubmit">
+          <v-form @submit.prevent="createArticle">
             <div
-              class="d-flex justify-space-between align-center justify-center"
+              class="d-flex justify-space-between align-center justify-center mx-4"
             >
               <v-text-field
-                v-model="title"
-                :readonly="loading"
-                :rules="[required]"
+                v-model="data.title"
                 class="ml-2 w-30"
                 label="title"
-                clearable
               ></v-text-field>
               <v-text-field
-                v-model="subTitle"
-                :readonly="loading"
-                :rules="[required]"
+                v-model="data.sub_title"
                 class="mr-2 w-30"
                 label="subTitle"
-                clearable
               ></v-text-field>
             </div>
             <div class="d-flex">
               <v-col cols="5" md="6">
                 <v-select
+                  v-model="data.category"
                   chips
-                  label="category "
-                  :items="[
-                    'California',
-                    'Colorado',
-                    'Florida',
-                    'Georgia',
-                    'Texas',
-                    'Wyoming',
-                  ]"
+                  :items="parents"
+                  item-title="title"
+                  item-value="id"
+                  label="Select"
                   multiple
+                  single-line
                 ></v-select>
               </v-col>
               <v-col cols="5" md="6">
-                <v-combobox v-model="select" label="tag article" multiple>
-                  <template v-slot:selection="data">
+                <v-combobox
+                  label="Enter your tags"
+                  prepend-icon="mdi-tag-multiple"
+                  variant="solo"
+                  chips
+                  v-model="data.tags"
+                  clearable
+                  multiple
+                >
+                  <template
+                    v-slot:selection="{ attrs, item, select, selected }"
+                  >
                     <v-chip
-                      :key="JSON.stringify(data.item)"
-                      v-bind="data.attrs"
-                      :disabled="data.disabled"
-                      :model-value="data.selected"
-                      size="small"
-                      @click:close="data.parent.selectItem(data.item)"
+                      v-bind="attrs"
+                      :model-value="selected"
+                      closable
+                      @click="select"
+                      @click:close="remove(item)"
                     >
-                      <template v-slot:prepend>
-                        <v-avatar class="bg-accent text-uppercase" start>{{
-                          data.item.title.slice(0, 1)
-                        }}</v-avatar>
-                      </template>
-                      {{ data.item.title }}
                     </v-chip>
                   </template>
                 </v-combobox>
               </v-col>
             </div>
-            <v-file-input
-              :rules="rules"
-              accept="image/png, image/jpeg, image/bmp"
-              label="featuring image"
-              placeholder="Pick an avatar"
-              prepend-icon="mdi-camera"
-            ></v-file-input>
-
+            <div class="">
+              <input
+                @change="imagesFile"
+                type="file"
+                name="image"
+              >
+            </div>
             <textarea
+              v-model="data.content"
               name=""
-              id=""
               cols="30"
               rows="8"
               class="w-100 my-5 bg-amber-accent-1"
@@ -103,9 +96,7 @@
               <v-btn
                 rounded="xl"
                 elevation="24"
-                :disabled="!form"
                 size="large"
-                :loading="loading"
                 color="grey-darken-1 "
                 type="submit"
                 variant="elevated"
@@ -121,30 +112,57 @@
   </div>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    form: false,
-    email: null,
-    password: null,
-    loading: false,
-    select: ["Vuetify", "Programming"],
-    items: ["Programming", "Design", "Vue", "Vuetify"],
-  }),
+<script setup>
+import { useToast } from "vue-toastification";
 
-  methods: {
-    onSubmit() {
-      if (!this.form) return;
+const toast = useToast();
+const data = reactive({
+  category: null,
+  title: "",
+  tags: null,
+  sub_title: "",
+  content: "",
+  image: null,
+});
 
-      this.loading = true;
+function imagesFile(event) {
+  console.log(event.target.files[0]  , 'event');
+  data.image.value = event.target.files[0];
+}
 
-      setTimeout(() => (this.loading = false), 2000);
-    },
-    required(v) {
-      return !!v || "Field is required";
-    },
-  },
-};
+const { data: parents } = await useFetch("/api/panel/category/all", {
+  query: { url: "/api/panel/category-all" },
+  headers: useRequestHeaders(["cookie"]),
+});
+
+
+async function createArticle() {
+  // console.log(data.title , 'iamgwe' );
+  // const formData = new FormData();
+  
+  // formData.append("image", data.image);
+  // formData.append("title", data.title);
+  // formData.append("sub_title", data.subTitle);
+  // formData.append("category", data.category);
+  // formData.append("tags", data.tags);
+  // formData.append("content", data.content);
+
+  try {
+    const dataType = await $fetch("/api/panel/articles/create", {
+      method: "POST",
+      body: data,
+      headers: {
+                'Accept': 'multipart/form-data',
+            }
+    });
+    toast.success("ایجاد محصول باموفقیت انجام شد");
+    // return navigateTo("/panel/articles");
+  } catch (error) {
+    errors.value = Object.values(error.data.data.message).flat();
+  } finally {
+    loading.value = false;
+  }
+}
 </script>
 
 <style>
