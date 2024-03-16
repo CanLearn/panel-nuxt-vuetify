@@ -15,7 +15,8 @@ export default defineEventHandler(async (event) => {
             maxAge : 60 * 60 * 24 * 7 , 
             path : '/'
         });
-        return data.user ;
+        console.log(data.token , 'data.user');
+        return data.token ;
     } catch (error) {
     }
 })

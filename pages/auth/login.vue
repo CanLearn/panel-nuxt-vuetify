@@ -37,6 +37,9 @@
 </template>
 
 <script setup>
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 const { authUser } = useAuth() 
 definePageMeta({
     middleware : 'guest'
@@ -55,7 +58,8 @@ async function login() {
     })
    
     authUser.value = user ; 
-    return navigateTo('/')
+    toast.success("You are registered!");
+    return navigateTo('/panel')
   
   }catch (e) {
     errors.value = Object.values(e.data).flat() ; 

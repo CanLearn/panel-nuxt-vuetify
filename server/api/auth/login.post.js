@@ -12,9 +12,10 @@ export default defineEventHandler(async (event) => {
             httpOnly : true , 
             secure : true , 
             maxAge : 60 * 60 * 24 * 7 , 
-            path : '/panel'
+            path : '/'
         });
-        return data.user ;
+        console.log(data.token , 'user');
+        return data.token ;
     } catch (error) {
     }
 })

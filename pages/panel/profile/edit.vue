@@ -59,6 +59,9 @@
 </template>
 
 <script setup>
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 definePageMeta({
     middleware : 'auth'
  })
