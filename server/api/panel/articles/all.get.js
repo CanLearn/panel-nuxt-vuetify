@@ -9,9 +9,9 @@ export default defineEventHandler(async (event) => {
                 'Authorization': `Bearer `+ token
             }
         });
-        console.log(data.data);
         return data.data;
     } catch (error) {
+        console.log(error);
        return error ; 
     }
 }) 
