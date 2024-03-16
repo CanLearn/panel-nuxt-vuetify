@@ -60,9 +60,11 @@
             </div>
           </v-col>
           <v-card-actions>
-            <v-btn color="black" variant="text">
-              click me !
-            </v-btn>
+            <NuxtLink to="/panel/profile/edit/">
+              <v-btn color="black" variant="text">
+                edit profile
+              </v-btn>
+            </NuxtLink>
 
             <v-spacer></v-spacer>
 

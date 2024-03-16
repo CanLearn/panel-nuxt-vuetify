@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" height="100%">
+  <v-navigation-drawer v-model="drawer" height="100%" floating>
     <v-container class="w-100 h-100">
       <v-card
         color="#171821"
@@ -14,7 +14,7 @@
             color="grey-darken-1"
             size="120"
           ></v-avatar>
-          <div class="">{{ authUser?.email }}</div>
+          <h5 class="">{{ authUser?.email }}</h5>
         </v-sheet>
         <v-divider></v-divider>
         <v-list class="mx-7">
@@ -88,7 +88,11 @@
     </v-container>
   </v-navigation-drawer>
 
-  <v-app-bar class="mt-4 w-95 color">
+  <v-app-bar
+    class="mt-4 w-95 color"
+    scroll-behavior="inverted elevate"
+    scroll-threshold="350"
+  >
     <v-app-bar-nav-icon
       style="color: white"
       @click="drawer = !drawer"

@@ -65,10 +65,6 @@ async function register() {
         })
 
         authUser.value = user;
-        console.log('user' , user);
-        console.log(authUser.value , 'authUser.value');
-        console.log(authUser , 'authUser.value');
-
         toast.success("You are registered!");
       return navigateTo('/panel')
     } catch (error) {

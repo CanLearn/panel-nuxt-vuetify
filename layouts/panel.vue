@@ -1,7 +1,7 @@
 <template>
     <v-app id="inspire">
       <PanelSideBar />
-      <v-main>
+      <v-main class="d-flex " style="min-height: 300px; max-height: 750px">
         <v-container class="py-8 px-15 justify-center" fluid>
           <slot />
           <RouterView /> 
