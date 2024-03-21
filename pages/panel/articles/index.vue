@@ -59,12 +59,14 @@
                   <span>category : </span>
 
                   <span class="w-10">
-                    <v-chip-group class="w-1 ma-0 mx-0" v-for="category in categories" :key="category">
+                    <v-chip-group class="w-1 ma-0 mx-0"  >
                       
-                      <v-chip>{{ data.category.title }}</v-chip>
+                      <v-chip v-for="category in article.categories" :key="category.id">{{ category.title }}</v-chip>
                     </v-chip-group>
                   </span>
+                  
                 </v-card-subtitle>
+         
                 <v-card-subtitle>
                   <span class="me-1">sub title : {{ article.title }} </span>
 
