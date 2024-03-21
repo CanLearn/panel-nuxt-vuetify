@@ -3,7 +3,6 @@ export default defineEventHandler(async (event) => {
   const {
     public: { apiBase },
   } = useRuntimeConfig();
-  console.log('salama mnm amirrezam');
   const token = getCookie(event, "token");
   const query = getQuery(event);
   try {

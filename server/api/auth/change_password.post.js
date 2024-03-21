@@ -6,7 +6,6 @@ export default defineEventHandler(async (event) => {
     public: { apiBase },
   } = useRuntimeConfig();
 
-  console.log(body , 'bbbbb');
   try {
     const data = await $fetch(`${apiBase}/api/auth/change-password`, {
       method: "POST",
@@ -16,10 +15,8 @@ export default defineEventHandler(async (event) => {
         'Authorization' : 'Bearer '+ token
     }
     });
-    console.log('success');
     data.user;
   } catch (error) {
-    console.log(error , 'error');
     return error
   }
 });

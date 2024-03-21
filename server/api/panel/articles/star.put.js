@@ -3,10 +3,8 @@ export default defineEventHandler(async (event) => {
   const {
     public: { apiBase },
   } = useRuntimeConfig();
-  console.log('salama mnm amirrezam');
   const token = getCookie(event, "token");
   const query = getQuery(event);
-  console.log(query , body , apiBase);
   try {
     const data = await $fetch( apiBase + query.url , {
       method: "PUT",

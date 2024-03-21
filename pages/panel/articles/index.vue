@@ -59,12 +59,9 @@
                   <span>category : </span>
 
                   <span class="w-10">
-                    <v-chip-group class="w-1 ma-0 mx-0">
-                      <v-chip>Chip 1</v-chip>
-
-                      <v-chip>Chip 2</v-chip>
-
-                      <v-chip>Chip 3</v-chip>
+                    <v-chip-group class="w-1 ma-0 mx-0" v-for="category in categories" :key="category">
+                      
+                      <v-chip>{{ category.title }}</v-chip>
                     </v-chip-group>
                   </span>
                 </v-card-subtitle>
@@ -132,7 +129,7 @@
 
 <script setup >
 import { useToast } from "vue-toastification";
-
+const category = [];
 const toast = useToast();
 const router = useRouter();
 const success = ref(false);

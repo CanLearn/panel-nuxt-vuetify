@@ -1,35 +1,48 @@
-import { readFiles } from 'h3-formidable'
-import FormData from 'form-data';
-import fs from 'fs';
+import { FormData } from "node-fetch-native";
 
 export default defineEventHandler(async (event) => {
     const { public: { apiBase } } = useRuntimeConfig();
     const token = getCookie(event, 'token')
-    const { fields, files } = await readFiles(event, {
-        includeFields: true,
-    })
-    console.log(fields, files , 'dsfds');
-    try {
-        console.log( fields, files );
-        let formData = new FormData();
-        formData.append("image", fs.createReadStream(files.image[0].filepath));
-        formData.append("title", fields.title[0]);
-        formData.append("sub_title", fields.sub_title[0]);
-        formData.append("category", fields.category[0]);
-        formData.append("tags", fields.tags[0]);
-        formData.append("content", fields.content[0]);
-        console.log(formData , 'formData');
-        const data = await $fetch(apiBase + '/api/panel/articles/', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                "Content-Type": "multipart/form-data" ,
-                'Authorization': `Bearer ${token}` ,
-                'Access-Control-Allow-Origin' : '*'
+    const body = await readMultipartFormData(event);
+    const formData = new FormData();
+    if (body) {
+        const image = body.find(field => field.name === 'image');
+        const title = body.find(field => field.name === 'title')
+
+        const sub_title = body.find(field => field.name === 'sub_title')
+
+        const content = body.find(field => field.name === 'content')
+
+        const category = body.find(field => field.name === 'category')
+ 
+        const tags = body.find(field => field.name === 'tags')
+
+        console.log(category.data.toLocaleString('utf8') , 'category');
+        try {
+            if (image) {
+                formData.append('image', new Blob([image.data], { type: image.type }), image.filename);
             }
-        });
-        return data.data;
-    } catch (error) {
-        console.log(error);
-        errors.value = Object.values(error.data.data.message).flat();    }
+            formData.append('title', title.data.toLocaleString('utf8'))
+            formData.append('sub_title', sub_title.data.toLocaleString('utf8'))
+            formData.append('content', content.data.toLocaleString('utf8'))
+            formData.append('category', category.data.toLocaleString('utf8'))
+            formData.append('tags', tags.data.toLocaleString('utf8'))
+            const data = await $fetch(apiBase + '/api/panel/articles/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    'Access-Control-Allow-Origin': '*'
+                }
+            });
+            console.log(data);
+            return data.data;
+        } catch (error) {
+            console.log(error, 'error');
+            errors.value = Object.values(error.data.data.message).flat();
+        }
+    }
+
 })
+

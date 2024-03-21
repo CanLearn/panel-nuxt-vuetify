@@ -76,8 +76,7 @@ const data = reactive({
 
 
 function imagesFile(event) {
-  data.image = event.target.files[0];
-  // console.log(event.target.files);
+  return data.image = event.target.files[0];
 }
 
 async function createArticle() {
@@ -89,15 +88,15 @@ async function createArticle() {
   formData.append("tags", data.tags);
   formData.append("content", data.content);
 
+  console.log(formData);
 
   try {
     const dataType = await $fetch("/api/panel/articles/create", {
       method: "POST",
       body: formData ,
     });
-    console.log(dataType);
     toast.success("ایجاد محصول باموفقیت انجام شد");
-    // return navigateTo("/panel/articles");  
+    return navigateTo("/panel/articles/");  
   } catch (error) {
     console.log(error)
     // errors.value = Object.values(error.data.data.message).flat();
